@@ -1,0 +1,34 @@
+{
+  "name": "enum-stream",
+  "version": "1.0.0",
+  "description": "Turn streams into enumerables",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jrf0110/enum-stream.git"
+  },
+  "keywords": [
+    "Stream",
+    "Enumerable",
+    "Enum",
+    "forEach",
+    "map",
+    "reduce",
+    "filter"
+  ],
+  "author": "John Fawcett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrf0110/enum-stream/issues"
+  },
+  "homepage": "https://github.com/jrf0110/enum-stream#readme",
+  "devDependencies": {
+    "mocha": "^2.5.3"
+  }
+}

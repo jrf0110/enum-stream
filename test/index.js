@@ -210,10 +210,17 @@ describe('EnumStream', function(){
 
     var s = new TestStream({ objectMode: true });
     var numIterations = 0;
+    class MappedObj {
+      constructor( props ){
+        Object.assign( this, props )
+      }
+    }
 
     new EnumStream( s, { concurrency: 1 })
+      .map( obj => new MappedObj( obj ) )
       .reduce( ( result, curr )=> {
         numIterations++;
+        assert( curr instanceof MappedObj )
         return result + curr.val;
       }, 0 )
       .errors( ( error )=>{

@@ -34,7 +34,7 @@ EnumStream
 
 ## API
 
-#### `constructor( stream[, options] ) -> EnumStream`
+#### `constructor( [stream[, options]] ) -> EnumStream`
 
 Creates a new EnumStream.
 
@@ -46,6 +46,36 @@ __Options:__
 {
   // How many objects to keep in memory
   concurrency: 1
+}
+```
+
+#### `.setStream(stream) -> this`
+
+Sets `this.stream` and registers listeners on the stream. Useful for setting up the EnumStream flow before having access to the underlying stream:
+
+```javascript
+const es = EnumStream.create( null, { concurrency: 10 } );
+
+// Maybe you're passing `es` around and consumers add
+// their own handlers:
+// ...
+
+// Some middleware
+function someMiddleware( es ){
+  return es.map( obj => new MyObj( obj ) )
+}
+
+// and at the end of the configuration, you get the stream source
+function process( es ){
+  return db.users.find()
+    .where({ name: { $gt: 'bob' }})
+    .pluck({ table: 'users_groups', column: 'groups' })
+    .stream()
+    .then( resultsStream => {
+      return new Promise( resolve => {
+        es.setStream( resultsStream ).end( ()=> resolve() );
+      });
+    });
 }
 ```
 

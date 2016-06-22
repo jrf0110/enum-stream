@@ -266,4 +266,39 @@ describe('EnumStream', function(){
 
     done();
   });
+
+  it('initializes without a stream', function( done ){
+    var numIterations = 0;
+
+    var objs = [
+      { foo: 'bar' }
+    , { foo: 'foo' }
+    , { foo: 'waff' }
+    , { foo: 'stack' }
+    ];
+
+    var es = new EnumStream( null, { concurrency: 1 } )
+      .map( ( obj )=>{
+        return { foo: obj.foo + ' foo' }
+      })
+      .forEach( ( obj )=>{
+        assert.equal( obj.foo, objs[ numIterations ].foo + ' foo' );
+        numIterations++;
+      })
+      .errors( ( error )=>{
+        assert( !error );
+      })
+      .end( ()=>{
+        assert.equal( numIterations, objs.length );
+        done();
+      });
+
+    var s = new TestStream({ objectMode: true });
+
+    setTimeout( ()=> {
+      es.setStream( s );
+      objs.forEach( ( obj, i ) => setTimeout( s.push.bind( s, obj ), i * 5 ) );
+      setTimeout( s.push.bind( s, null ), objs.length * 5 );
+    }, 100 );
+  });
 });

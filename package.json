@@ -1,6 +1,6 @@
 {
   "name": "enum-stream",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Turn streams into enumerables",
   "main": "index.js",
   "directories": {
